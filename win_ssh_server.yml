@@ -1,0 +1,15 @@
+---
+- name: Deploy and Configure OpenSSH
+  hosts: windows
+  gather_facts: true
+
+  pre_tasks:  
+  - name: Include Variables
+    include_vars:
+      file: ./ssh_var.yml
+
+  roles:
+    - role: win_package_install
+    - role: win_service_manage
+    - role: win_firewall
+

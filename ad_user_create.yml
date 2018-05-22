@@ -1,0 +1,12 @@
+---
+- name: Create Windows AD Users
+  hosts: windows
+  gather_facts: true
+
+  pre_tasks:  
+  - name: Include Variables
+    include_vars:
+      file: ./user_info.yml
+
+  roles:
+    - role: win_ad_user

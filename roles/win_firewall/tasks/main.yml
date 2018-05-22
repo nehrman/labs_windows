@@ -1,0 +1,10 @@
+---
+# tasks file for win_firewall
+- name: Ensure Firewall rule "{{ service_name }}" is present
+  win_firewall_rule:
+    name: "{{ service_name}}"
+    localport: "{{ local_port }}" 
+    protocol: "{{ protocol_name }}"
+    direction: in
+    action: allow
+    state: "{{ fw_rule_state }}"

@@ -1,0 +1,38 @@
+---
+# tasks file for ad
+- name: Ensure Active Directory Services are presents
+  win_feature: 
+    name: AD-Domain-Services
+    state: present
+    include_sub_features: True
+    include_management_tools: True
+
+- name: Ensure domain "{{ ad_domain_name }}" is present and reachable
+  win_domain:
+    dns_domain_name: "{{ ad_domain_name }}"
+    safe_mode_password: "{{ ad_safe_mode_password }}"
+  register: domain_result
+
+- name: Reboot Domain Controller if needed
+  win_reboot:
+    msg: "Reboot initiated due to configuration of Domain Services"
+    test_command: whoami
+  register: reboot_result
+  when: domain_result.reboot_required
+
+- name: Gather Domains available
+  win_command: "nltest /dclist:{{ ad_domain_name }}"
+  register: nltest_result
+
+- name: Display Domains available
+  debug: 
+    var: nltest_result
+
+- name: Ensure "{{ ad_admin_user }}" is present
+  win_domain_user:
+    name: admin
+    upn: "{{ ad_admin_user }}"
+    password: "{{ ad_admin_password }}"
+    state: present
+    groups:
+      - Domain Admins

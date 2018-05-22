@@ -1,0 +1,9 @@
+---
+# tasks file for win_package_install
+- name: Deploy applications on "{{ ansible_hostname }}"
+  win_chocolatey:
+    name: "{{ item }}"
+    params: "{{ parameters }}"
+    state: "{{ apps_state }}"
+  with_items: "{{ apps }}"
+  when:  ansible_distribution  == "Microsoft Windows Server 2012 R2 Standard"

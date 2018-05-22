@@ -1,0 +1,12 @@
+---
+# tasks file for win_ad_user
+- name: Create Active Directory user 
+  win_domain_user:
+    name: "{{ item.name }}"
+    upn: "{{ item.name }}@ad1.{{ guid }}.example.opentlc.com"
+    firstname: "{{ item.firstname }}"
+    surname: "{{ item.surname }}"
+    password: "{{ item.password }}"
+    email: "{{ item.email }}"
+    update_password: on_create
+  with_items: "{{ users }}" 

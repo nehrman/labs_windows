@@ -1,0 +1,12 @@
+---
+- name: Deploy and Configure Domain Services
+  hosts: windows
+  gather_facts: false
+
+  pre_tasks:  
+  - name: Include Variables
+    include_vars:
+      file: ./my_ad_vars.yml
+
+  roles:
+    - role: ad
